@@ -31,7 +31,6 @@ def loginPage(request):
             messages.error(request, 'User does not exist')
 
         user = authenticate(request, email=email, password=password)
-        print(user)
 
         if user is not None:
             login(request, user)
@@ -80,7 +79,7 @@ def home(request):
         Q(room__topic__name__icontains=q))[0:3]
 
     context = {'rooms': rooms, 'topics': topics,
-               'room_count': room_count, 'room_messages': room_messages}
+                'room_count': room_count, 'room_messages': room_messages}
     return render(request, 'base/home.html', context)
 
 
@@ -90,7 +89,7 @@ def room(request, pk):
     participants = room.participants.all()
 
     if request.method == 'POST':
-        message = Message.objects.create(
+        Message.objects.create(
             user=request.user,
             room=room,
             body=request.POST.get('body')
@@ -99,7 +98,7 @@ def room(request, pk):
         return redirect('room', pk=room.id)
 
     context = {'room': room, 'room_messages': room_messages,
-               'participants': participants}
+                'participants': participants}
     return render(request, 'base/room.html', context)
 
 
@@ -109,7 +108,7 @@ def userProfile(request, pk):
     room_messages = user.message_set.all()
     topics = Topic.objects.all()
     context = {'user': user, 'rooms': rooms,
-               'room_messages': room_messages, 'topics': topics}
+                'room_messages': room_messages, 'topics': topics}
     return render(request, 'base/profile.html', context)
 
 
